@@ -54,7 +54,6 @@ class SocketService with ChangeNotifier {
       print("Nueva notificacion");
       this._name = payload;
       this._newNotification = true;
-      notifyListeners();
     });
   }
 }

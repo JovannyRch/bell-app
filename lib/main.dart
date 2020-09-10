@@ -1,9 +1,13 @@
+import 'package:bell_app/screens/auth/login.dart';
+import 'package:bell_app/screens/auth/register.dart';
 import 'package:bell_app/screens/home_screen.dart';
 import 'package:bell_app/services/socket_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -13,7 +17,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Bell App',
-        home: HomeScreen(),
+        home: LoginScreen(),
       ),
     );
   }
