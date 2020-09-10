@@ -1,6 +1,7 @@
 import 'package:bell_app/const/conts.dart';
 import 'package:bell_app/screens/auth/widgets/bg_widget.dart';
 import 'package:bell_app/screens/auth/widgets/button_auth.dart';
+import 'package:bell_app/screens/auth/widgets/custom_input.dart';
 import 'package:bell_app/screens/auth/widgets/input_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -63,7 +64,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         children: [
           Text(
             "Or create using social media",
-            style: TextStyle(fontWeight: FontWeight.w600),
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
           ),
           SizedBox(
             height: 20.0,
@@ -115,10 +116,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
           SizedBox(height: 20.0),
-          InputAuth("Email / Username", username, Icons.person),
-          InputAuth("Password", password, Icons.lock, isPassword: true),
-          InputAuth("Confirm your password", password2, Icons.lock,
-              isPassword: true),
+          CustomInput(
+              icon: Icons.person,
+              placeholder: 'Email',
+              textController: username),
+          CustomInput(
+            icon: Icons.lock_outline,
+            placeholder: 'Password',
+            textController: password,
+            isPassword: true,
+          ),
+          CustomInput(
+            icon: Icons.lock_outline,
+            placeholder: 'Confirm your password',
+            textController: password2,
+            isPassword: true,
+          ),
           SizedBox(
             height: 15.0,
           ),

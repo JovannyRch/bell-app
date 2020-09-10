@@ -1,6 +1,7 @@
 import 'package:bell_app/screens/auth/register.dart';
 import 'package:bell_app/screens/auth/widgets/bg_widget.dart';
 import 'package:bell_app/screens/auth/widgets/button_auth.dart';
+import 'package:bell_app/screens/auth/widgets/custom_input.dart';
 import 'package:bell_app/screens/auth/widgets/input_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("Don't have an account?"),
+        Text(
+          "Don't have an account?",
+          style: TextStyle(fontSize: 18.0),
+        ),
         SizedBox(
           width: 5.0,
         ),
@@ -82,9 +86,9 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Text(
             "Create",
             style: TextStyle(
-              fontWeight: FontWeight.bold,
-              decoration: TextDecoration.underline,
-            ),
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.underline,
+                fontSize: 18.0),
           ),
         )
       ],
@@ -105,8 +109,16 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           SizedBox(height: 20.0),
-          InputAuth("Email / Username", username, Icons.person),
-          InputAuth("Password", password, Icons.lock, isPassword: true),
+          CustomInput(
+              icon: Icons.person,
+              placeholder: 'Email',
+              textController: username),
+          CustomInput(
+            icon: Icons.lock_outline,
+            placeholder: 'Password',
+            textController: password,
+            isPassword: true,
+          ),
           SizedBox(
             height: 15.0,
           ),
