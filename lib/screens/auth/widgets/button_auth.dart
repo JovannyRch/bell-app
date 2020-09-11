@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 
 class ButtonAuth extends StatelessWidget {
   final String text;
+  final Function f;
 
-  ButtonAuth(this.text);
+  ButtonAuth(this.text, this.f);
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         GestureDetector(
+          onTap: f,
           child: Row(
             children: [
               Text(

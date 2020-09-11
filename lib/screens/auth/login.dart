@@ -1,10 +1,16 @@
+import 'dart:ui';
+
+import 'package:bell_app/const/conts.dart';
 import 'package:bell_app/screens/auth/register.dart';
 import 'package:bell_app/screens/auth/widgets/bg_widget.dart';
+import 'package:bell_app/screens/auth/widgets/blurContainer.dart';
 import 'package:bell_app/screens/auth/widgets/button_auth.dart';
 import 'package:bell_app/screens/auth/widgets/custom_input.dart';
 import 'package:bell_app/screens/auth/widgets/input_widget.dart';
+import 'package:bell_app/services/auth_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -13,6 +19,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   Size _size;
+  bool isLoading = false;
 
   TextEditingController password = new TextEditingController();
   TextEditingController username = new TextEditingController();
@@ -21,7 +28,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Stack(
+      body: BlurContainer(
+        isLoading: isLoading,
+        color: kBaseColor,
         children: [
           HeaderWave(),
           content(),
@@ -95,6 +104,19 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  void changeLoading(bool val) {
+    setState(() {
+      isLoading = val;
+    });
+  }
+
+  void onLogin() async {
+    final auth = Provider.of<AuthService>(context, listen: false);
+    changeLoading(true);
+    bool ok = await auth.login(username.text, password.text);
+    changeLoading(false);
+  }
+
   Widget form() {
     return Container(
       width: _size.width * 0.75,
@@ -122,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
           SizedBox(
             height: 15.0,
           ),
-          ButtonAuth("Login"),
+          ButtonAuth("Login", onLogin),
           SizedBox(
             height: 40.0,
           ),
