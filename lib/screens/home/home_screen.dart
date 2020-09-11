@@ -2,8 +2,11 @@ import 'package:bell_app/const/conts.dart';
 import 'package:bell_app/screens/groups/groups_screen.dart';
 import 'package:bell_app/screens/groups/mainGroup.dart';
 import 'package:bell_app/screens/settings/settings_screen.dart';
+import 'package:bell_app/services/socket_service.dart';
 import 'package:bell_app/widgets/title_screen_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -16,6 +19,13 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
+    final socketServide = Provider.of<SocketService>(context);
+    if (socketServide.isNewNotification ||
+        socketServide.isSendingNotification) {
+      return Scaffold(
+        body: MainGroup(),
+      );
+    }
     return Scaffold(
       body: IndexedStack(
         index: _selectedIndex,

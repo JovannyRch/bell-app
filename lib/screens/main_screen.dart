@@ -40,7 +40,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void sendingNotification() {
-    print("Enviando notificación");
+    print("Sending notification");
     socketService.isSendingNotification = true;
     timer = Timer(Duration(seconds: 5), () {
       setState(() {

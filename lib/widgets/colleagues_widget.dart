@@ -41,7 +41,7 @@ class ColleaguesGroup extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Software Enginner",
+                  "Software Engineer",
                   style: TextStyle(
                     color: Colors.black45,
                     fontSize: 17.0,

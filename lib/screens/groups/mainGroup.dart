@@ -1,6 +1,13 @@
+import 'dart:async';
+
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:bell_app/responses/auth_response.dart';
+import 'package:bell_app/services/socket_service.dart';
+import 'package:bell_app/widgets/blur_notification_widget.dart';
 import 'package:bell_app/widgets/colleagues_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shake/shake.dart';
 
 class MainGroup extends StatefulWidget {
   MainGroup({Key key}) : super(key: key);
@@ -23,42 +30,109 @@ class _MainGroupState extends State<MainGroup> {
     User(id: 8, name: "user 8"),
   ];
 
+  Timer timer;
+  String name = "";
+
+  final assetAudioPlayer = new AssetsAudioPlayer();
+
+  SocketService socketService;
+  @override
+  void initState() {
+    ShakeDetector detector = ShakeDetector.autoStart(onPhoneShake: () {
+      if (!socketService.isSendingNotification) {
+        socketService.emit('notification', {'evento': 'Nuevo negocio'});
+      }
+    });
+    socketService = Provider.of<SocketService>(context, listen: false);
+    super.initState();
+  }
+
+  void playSong() {
+    AssetsAudioPlayer.newPlayer().open(
+      Audio("audios/bell.mp3"),
+      showNotification: true,
+    );
+  }
+
+  void sendNotification() {
+    socketService.isSendingNotification = true;
+    playSong();
+
+    timer = Timer(Duration(seconds: 5), () {
+      socketService.isSendingNotification = false;
+
+      timer.cancel();
+    });
+  }
+
+  void onNewNotification() {
+    playSong();
+    timer = Timer(Duration(seconds: 5), () {
+      setState(() {
+        socketService.isNewNotification = false;
+        timer.cancel();
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    socketService = Provider.of<SocketService>(context);
     _size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              header(),
-              _titleColleagues(),
-              _members(),
-            ],
-          ),
+      body: BlurNotification(
+        isShowing: (socketService.isNewNotification ||
+            socketService.isSendingNotification),
+        children: [
+          _content(),
+        ],
+      ),
+    );
+  }
+
+  Widget _content() {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            header(),
+            _titleColleagues(),
+            _members(),
+          ],
         ),
       ),
     );
   }
 
+  Widget blurContainer() {
+    return Container();
+  }
+
   Widget header() {
+    String srcImage = 'images/team.png';
+
     return Container(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: _size.height * 0.15),
-          Image.asset('images/team.png', height: 80.0),
+          Image.asset(srcImage, height: 80.0),
           titleGroup(),
           SizedBox(height: 10.0),
-          Text(
-            "Shake your phone to notify",
-            style: TextStyle(
-              color: Colors.black45,
-              letterSpacing: 1.1,
+          GestureDetector(
+            onTap: () {
+              sendNotification();
+            },
+            child: Text(
+              "Shake your phone to notify",
+              style: TextStyle(
+                color: Colors.black45,
+                letterSpacing: 1.1,
+              ),
             ),
           ),
         ],
