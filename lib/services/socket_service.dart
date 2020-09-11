@@ -26,7 +26,10 @@ class SocketService with ChangeNotifier {
   IO.Socket get socket => this._socket;
   Function get emit => this._socket.emit;
 
-  set isNewNotification(val) => this._newNotification = val;
+  set isNewNotification(val) {
+    this._newNotification = val;
+    notifyListeners();
+  }
 
   void _initConfig() {
     _socket = IO.io('http://192.168.0.106:3000/', {
@@ -54,6 +57,7 @@ class SocketService with ChangeNotifier {
       print("Nueva notificacion");
       this._name = payload;
       this._newNotification = true;
+      notifyListeners();
     });
   }
 }

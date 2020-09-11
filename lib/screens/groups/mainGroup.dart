@@ -40,7 +40,7 @@ class _MainGroupState extends State<MainGroup> {
   void initState() {
     ShakeDetector detector = ShakeDetector.autoStart(onPhoneShake: () {
       if (!socketService.isSendingNotification) {
-        socketService.emit('notification', {'evento': 'Nuevo negocio'});
+        sendNotification();
       }
     });
     socketService = Provider.of<SocketService>(context, listen: false);
@@ -57,7 +57,7 @@ class _MainGroupState extends State<MainGroup> {
   void sendNotification() {
     socketService.isSendingNotification = true;
     playSong();
-
+    socketService.emit('notification', "hola");
     timer = Timer(Duration(seconds: 5), () {
       socketService.isSendingNotification = false;
 
@@ -78,6 +78,9 @@ class _MainGroupState extends State<MainGroup> {
   @override
   Widget build(BuildContext context) {
     socketService = Provider.of<SocketService>(context);
+    if (socketService.isNewNotification) {
+      onNewNotification();
+    }
     _size = MediaQuery.of(context).size;
     return Scaffold(
       body: BlurNotification(
