@@ -1,11 +1,9 @@
 import 'package:bell_app/const/conts.dart';
 import 'package:bell_app/screens/groups/groups_screen.dart';
 import 'package:bell_app/screens/groups/mainGroup.dart';
-import 'package:bell_app/screens/settings/settings_screen.dart';
+import 'package:bell_app/screens/profile/profile_screen.dart';
 import 'package:bell_app/services/socket_service.dart';
-import 'package:bell_app/widgets/title_screen_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -32,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           MainGroup(),
           GroupsScreen(),
-          SettingScreen(),
+          ProfileScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -46,8 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
             title: Text('Groups'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            title: Text('Settings'),
+            icon: Icon(Icons.person),
+            title: Text('Profile'),
           ),
         ],
         currentIndex: _selectedIndex,

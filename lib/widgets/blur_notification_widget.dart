@@ -45,7 +45,7 @@ class _BlurNotificationState extends State<BlurNotification> {
             height: _size.height * 0.5,
             width: _size.width,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.grey.shade50,
               borderRadius: BorderRadius.circular(20.0),
             ),
             child: Center(
