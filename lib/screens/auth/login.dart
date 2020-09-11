@@ -1,16 +1,19 @@
 import 'dart:ui';
 
 import 'package:bell_app/const/conts.dart';
+import 'package:bell_app/helpers/token.dart';
+import 'package:bell_app/helpers/showAlert.dart';
 import 'package:bell_app/screens/auth/register.dart';
 import 'package:bell_app/screens/auth/widgets/bg_widget.dart';
 import 'package:bell_app/screens/auth/widgets/blurContainer.dart';
 import 'package:bell_app/screens/auth/widgets/button_auth.dart';
 import 'package:bell_app/screens/auth/widgets/custom_input.dart';
-import 'package:bell_app/screens/auth/widgets/input_widget.dart';
 import 'package:bell_app/services/auth_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+// Create storage
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -111,10 +114,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void onLogin() async {
+    Focus.of(context).unfocus();
     final auth = Provider.of<AuthService>(context, listen: false);
     changeLoading(true);
     bool ok = await auth.login(username.text, password.text);
     changeLoading(false);
+    if (ok) {
+      await saveToken(auth.token);
+      Navigator.pushNamed(context, '/home');
+    } else {
+      final error = auth.error;
+      showAlert(context, 'Login failed', error.msg);
+    }
   }
 
   Widget form() {
@@ -144,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
           SizedBox(
             height: 15.0,
           ),
-          ButtonAuth("Login", onLogin),
+          ButtonAuth("Login", isLoading ? null : onLogin),
           SizedBox(
             height: 40.0,
           ),

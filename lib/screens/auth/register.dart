@@ -117,6 +117,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void onRegister() async {
     //TODO: Validate
+    Focus.of(context).unfocus();
     final auth = Provider.of<AuthService>(context, listen: false);
     changeLoading(true);
     bool ok = await auth.registration(username.text, name.text, password.text);
@@ -160,7 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           SizedBox(
             height: 15.0,
           ),
-          ButtonAuth("Register", onRegister),
+          ButtonAuth("Register", isLoading ? null : onRegister),
           SizedBox(
             height: 40.0,
           ),

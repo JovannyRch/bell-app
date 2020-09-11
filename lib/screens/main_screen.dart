@@ -6,14 +6,14 @@ import 'package:provider/provider.dart';
 import 'package:shake/shake.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  MainScreen({Key key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _MainScreenState createState() => _MainScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _MainScreenState extends State<MainScreen> {
   Timer timer;
   String name = "";
 
