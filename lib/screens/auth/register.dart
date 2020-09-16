@@ -1,4 +1,5 @@
 import 'package:bell_app/const/conts.dart';
+import 'package:bell_app/helpers/showAlert.dart';
 import 'package:bell_app/screens/auth/widgets/bg_widget.dart';
 import 'package:bell_app/screens/auth/widgets/blurContainer.dart';
 import 'package:bell_app/screens/auth/widgets/button_auth.dart';
@@ -117,6 +118,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void onRegister() async {
     //TODO: Validate
+    if (name.text.isEmpty) {
+      showAlert(context, 'Error', 'The name field is required');
+      return;
+    }
+
+    if (username.text.isEmpty) {
+      showAlert(context, 'Error', 'The email field is required');
+      return;
+    }
+
+    if (password.text.isEmpty) {
+      showAlert(context, 'Error', 'The password field is required');
+      return;
+    }
+    if (password.text != password2.text) {
+      showAlert(context, 'Error', "Passwords doesn't match");
+      return;
+    }
+
     Focus.of(context).unfocus();
     final auth = Provider.of<AuthService>(context, listen: false);
     changeLoading(true);
