@@ -79,9 +79,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              btnImage('images/facebook.png'),
-              btnImage('images/google-mas.png'),
-              btnImage('images/linkedin.png'),
+              btnImage('images/facebook.png', facebook),
+              btnImage('images/google-mas.png', google),
+              btnImage('images/linkedin.png', linkedin),
             ],
           )
         ],
@@ -89,8 +89,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget btnImage(String path) {
-    return Image.asset(path, height: 30.0);
+  void facebook() {}
+
+  void google() {}
+
+  void linkedin() {}
+
+  Widget btnImage(String path, Function f) {
+    return GestureDetector(
+      child: Image.asset(path, height: 30.0),
+      onTap: f,
+    );
   }
 
   Widget logo() {
@@ -117,7 +126,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void onRegister() async {
-    //TODO: Validate
+    print("On register");
     if (name.text.isEmpty) {
       showAlert(context, 'Error', 'The name field is required');
       return;
@@ -136,11 +145,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       showAlert(context, 'Error', "Passwords doesn't match");
       return;
     }
-
-    Focus.of(context).unfocus();
+    //Fix: Check error on unfocus
+    //Focus.of(context).unfocus();
     final auth = Provider.of<AuthService>(context, listen: false);
     changeLoading(true);
     bool ok = await auth.registration(username.text, name.text, password.text);
+
+    //Go to home screen
+    Navigator.pushReplacementNamed(context, '/home');
     changeLoading(false);
   }
 

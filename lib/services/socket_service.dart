@@ -1,3 +1,4 @@
+import 'package:bell_app/global/enviroment.dart';
 import 'package:flutter/foundation.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -32,7 +33,7 @@ class SocketService with ChangeNotifier {
   }
 
   void _initConfig() {
-    _socket = IO.io('http://192.168.0.106:3000/', {
+    _socket = IO.io(Enviroment.socketUrl, {
       'transports': ['websocket'],
       'autoConnect': true,
     });

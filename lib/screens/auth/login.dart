@@ -115,13 +115,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void onLogin() async {
     //Focus.of(context).unfocus();
+
     final auth = Provider.of<AuthService>(context, listen: false);
     changeLoading(true);
     bool ok = await auth.login(username.text, password.text);
     changeLoading(false);
     if (ok) {
       await saveToken(auth.token);
-      Navigator.pushReplacementNamed(context, '/home');
+      if (!auth.user.isPremium) {
+        Navigator.pushReplacementNamed(context, '/noPremium');
+      } else {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
     } else {
       final error = auth.error;
       showAlert(context, 'Login failed', error.msg);
